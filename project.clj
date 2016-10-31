@@ -1,4 +1,4 @@
-(defproject sv/system.core "0.1.1-SNAPSHOT"
+(defproject sv/system.core "0.1.1"
   :description "System is an approach to implement component-based systems"
   :url "https://github.com/SimpleValue/sv.system"
   :license {:name "Eclipse Public License"
