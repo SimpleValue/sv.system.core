@@ -96,17 +96,22 @@
     components)))
 
 (defn start-order [components]
-  (assert (= (count components)
-             (count (distinct (map :binds components))))
-          "binds must be unique")
-  (let [index (components-by-binds components)]
-    (keep
-     index
-     (dep/topo-sort
-      (dependency-graph
-       (remove
-        nil?
-        components))))))
+  (let [components (remove nil? components)
+        duplicated-binds (filter
+                          #(> (count (second %)) 1)
+                          (group-by
+                           :binds
+                           components))]
+    (assert (empty? duplicated-binds)
+            (str "there are duplicated binds: " (pr-str duplicated-binds)))
+    (let [index (components-by-binds components)]
+      (keep
+       index
+       (dep/topo-sort
+        (dependency-graph
+         (remove
+          nil?
+          components)))))))
 
 (defn fill-args [system invocation]
   (map
